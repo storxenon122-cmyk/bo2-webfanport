@@ -1,5 +1,7 @@
 # BO2 Web Fan Port
 
+**Play online:** [Open the game hub](https://storxenon122-cmyk.github.io/bo2-webfanport/) · [BO2 Web Edition](https://storxenon122-cmyk.github.io/bo2-webfanport/bo2-web/bo2.html) · [Zombies: Kino der Toten](https://storxenon122-cmyk.github.io/bo2-webfanport/cod-zombies-web/codzom.html)
+
 A small collection of two independent, browser-playable first-person games inspired by the Call of Duty universe. They run directly from static HTML, CSS, and JavaScript—there is no build step or package installation needed. Three.js is loaded from a CDN, so an internet connection is needed when the game first loads.
 
 > **Fan-made project:** This repository is not affiliated with, endorsed by, or sponsored by Activision or Treyarch. The games use original, procedurally generated graphics and synthesized audio; they do not include official game assets.
