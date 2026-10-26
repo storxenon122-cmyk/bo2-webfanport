@@ -14,7 +14,7 @@ the [root README](../README.md) and [How to Play](../HOW_TO_PLAY.md).
 
 ```
 bo2-web/
-├── index.html          # page shell: menu overlays, HUD, script includes
+├── bo2.html            # page shell: menu overlays, HUD, script includes
 ├── css/
 │   └── style.css       # Black Ops 2-style dark/orange UI + HUD styling
 └── js/
@@ -41,7 +41,7 @@ bo2-web/
 cd bo2-web
 python -m http.server 8000
 ```
-Open **http://localhost:8000** in Chrome / Firefox / Edge / Safari.
+Open **http://localhost:8000/bo2.html** in Chrome / Firefox / Edge / Safari.
 
 No Python? Use any static server, e.g.:
 ```bash
@@ -50,13 +50,13 @@ php -S localhost:8000 # PHP
 ```
 
 ### Option B — Double-click
-Just open **index.html** directly in a browser.
+Just open **bo2.html** directly in a browser.
 (Only regular `<script>` tags are used — no ES modules — so `file://` works.
 An internet connection is needed once to fetch Three.js from the CDN.)
 
 ### Option C — Deploy free
-- **GitHub Pages**: push the `bo2-web/` folder → repo *Settings → Pages →
-  deploy from branch* → open `https://<user>.github.io/<repo>/`
+- **GitHub Pages**: deploy this repository from the root using the included
+  Pages workflow → open `https://<user>.github.io/<repo>/bo2-web/bo2.html`
 - **Netlify**: drag-and-drop the `bo2-web/` folder at https://app.netlify.com/drop
 - **itch.io**: zip the folder and upload as an HTML game
 

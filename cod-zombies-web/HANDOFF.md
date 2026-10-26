@@ -10,7 +10,7 @@ here, copy nothing back to `bo2-web`.
 - Location: `cod-zombies-web/` (this folder).
 - Stack: static HTML + ES6 + Three.js r149 UMD + Web Audio. No bundler, no ES
   modules, no build step.
-- Entry: `index.html` -> **ZOMBIES** -> **KINO DER TOTEN**.
+- Entry: `codzom.html` -> **ZOMBIES** -> **KINO DER TOTEN**.
 - Scope: one foyer, one theater, two barricaded windows, one point-gated door,
   one perk placeholder, one Mystery Box placeholder, one Pack-a-Punch anchor.
 - The original BO2 survival project is a separate folder and is intentionally

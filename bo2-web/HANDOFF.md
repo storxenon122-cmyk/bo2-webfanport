@@ -8,7 +8,7 @@ Read this file first. It gives you everything the previous session established.
 - Maps are **original designs** (not BO2 replicas): each is a polished, purpose-built level with real building interiors, staircases, roof access, props (cars, crates, barrels, fences, lamps, market stalls), and distinct atmospheric lighting. Multi-story buildings use a shared `addBuilding` helper with door gaps, windows, interior stairs, and parapet roofs.
 - **Last session (guns / camos / killstreak bars / perf):** all 18 gun models rebuilt on a shared part kit (they had detached barrels/scopes), all 6 camos rewritten as seamless 512² procedural textures with an IBL probe for the metallic ones, Dark Matter re-made as a genuinely animated BO3-style nebula, the killstreak score/bars made per-streak (reset only that streak, never over-cost), blood spurt fixed, and two perf wins landed (change-detected HUD DOM writes + half-rate sun shadow on Medium). Everything re-verified — see the Verified table and the bug log entries 20–30 below.
 - Platform: **desktop only — keyboard + mouse (pointer lock).** Touch/on-screen controls and gyro/tilt aiming were removed on request; there is no mobile path left in the code.
-- Run: `python -m http.server 8000` → http://localhost:8000 (also works via double-click index.html; needs internet for the Three.js CDN).
+- Run: `python -m http.server 8000` → http://localhost:8000/bo2.html (also works via double-click bo2.html; needs internet for the Three.js CDN).
 - **No-cache dev server:** `python bo2-web/serve_nocache.py` → http://localhost:8001 (sends `Cache-Control: no-store`; use this while iterating or the browser will keep running stale JS).
 
 ## FEATURES IMPLEMENTED
@@ -60,7 +60,7 @@ Test scripts live in `%TEMP%\opencode` (run with the system Python + Playwright,
 1. **Fall-through-floor death on every map** — `resolveCollision` had inverted vertical resolution (players standing on a box got pushed DOWN through it). Rewritten: least-penetration-axis with correct push signs (`pushX`/`pushZ` = signed correction, consumers gate by vel sign), step-up only when `moveDir.y <= 0.02` (no step-up during jumps), headroom check before step-up. Both call sites pass `{x,y,z}` moveDir.
 2. **Upper floors/roofs unreachable** — `addStairs` built every flight from y=0. Now takes `baseY`; `addBuilding` places switchback flights alternating sides per floor (`flight(k)`/`placeFlight(k)`), rise aligned so the top step is **flush with the receiving slab top** (`stepsF = ceil((floorH+0.3)/0.48)`, rise = (floorH+0.2 or +0.3)/stepsF), and **every floor slab + roof gets a stairwell hole** over the flight below (`slabWithHole`) — otherwise the climber's head hits the ceiling (step-up correctly refuses → stuck).
 3. **Odd flights (dirX=-1) misplaced** — `endX` ignored `dirX`, cutting the roof stairwell hole in the wrong place; railings were 5.5 m off. `endX = startX + dirX*stepsF*runPer`; `slabWithHole` normalizes min/max; railings anchor at `startX`.
-4. **404 `/favicon.ico`** — inline SVG data-URI icon added in `index.html` (text-only, no binary asset).
+4. **404 `/favicon.ico`** — inline SVG data-URI icon added in `bo2.html` (text-only, no binary asset).
 5. **Stuck red damage vignette after respawn** — `HUD.update` stops while dead, freezing `_dmg` at 1 behind the death screen. Added `HUD.resetFx()`, called from `Game.start()` and `Game.respawn()`.
 6. **Jump never fired (Space "removed")** — `Input.pressed()` consumes the edge on first read; the dolphin-dive check at the top of `Game.update` read `pressed('jump')` first, so the real jump check later in the function never saw the press. Fixed by consuming the edge **once** into `const jumpPressed` used by dive/jump/prone-up checks. Dive (crouch+jump while sprinting) still works.
 7. **Dark Matter camo never applied (0/18 meshes) + per-frame shader recompile** — `setWeapon` camel-cased the loadout id (`'darkmatter'` → lookup `camoDarkmatter`, no such MAT key). Added explicit `CAMO_MATS` table (lowercase id → material) used for gun, barrel attachments and the animation. Animation compared `'darkMatter'` but stored id is `'darkmatter'` (never ran) and set `needsUpdate = true` every frame (shader recompile per frame); both fixed.
@@ -123,7 +123,7 @@ Test scripts live in `%TEMP%\opencode` (run with the system Python + Playwright,
 - A stationary AFK player will get shot dead by bots in seconds — clear bots (`BotManager.clear(); Game.spawnState.spawning=0;`) before taking UI/gameplay screenshots.
 
 ## Conventions
-- No build step, no bundler, no modules — plain `<script>` tags in `index.html`.
+- No build step, no bundler, no modules — plain `<script>` tags in `bo2.html`.
 - All assets procedural (Three.js primitives, canvas textures, Web Audio oscillators) — **no binary/base64 files, keep it that way**.
 - Style: dark grey `#0d1013` / orange `#e8801c`, condensed uppercase UI (see `css/style.css` vars).
 - Original assets only — no copyrighted CoD material (fan project disclaimer in menu footer).

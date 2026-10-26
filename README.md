@@ -29,7 +29,7 @@ You can open either game's HTML file directly, or use a local web server (recomm
 python -m http.server 8000
 ```
 
-Then visit <http://localhost:8000/>.
+Then visit <http://localhost:8000/bo2.html>.
 
 **Zombies Web Edition** — change to `cod-zombies-web/` and run:
 
@@ -37,7 +37,7 @@ Then visit <http://localhost:8000/>.
 python -m http.server 8051
 ```
 
-Then visit <http://localhost:8051/>.
+Then visit <http://localhost:8051/codzom.html>.
 
 If `python` is not recognized on Windows, try `py -m http.server 8000` or `py -m http.server 8051` from the appropriate game folder. Keep the server terminal open while playing; stop it with Ctrl+C when finished. Each game also has its own no-cache development server—see its project README.
 

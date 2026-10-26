@@ -6,7 +6,7 @@ From the `cod-zombies-web/` folder, start the local server:
 py -m http.server 8051
 ```
 
-Open <http://127.0.0.1:8051/> to play. Keep the server running while using the game or running checks. If `py` is unavailable, use `python -m http.server 8051`.
+Open <http://127.0.0.1:8051/codzom.html> to play. Keep the server running while using the game or running checks. If `py` is unavailable, use `python -m http.server 8051`.
 
 ## Run the checks
 

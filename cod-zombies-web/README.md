@@ -25,7 +25,7 @@ From this folder:
 python -m http.server 8051
 ```
 
-Open **http://127.0.0.1:8051/**.
+Open **http://127.0.0.1:8051/codzom.html**.
 
 Or use the no-cache helper while developing:
 
@@ -35,7 +35,7 @@ python serve_nocache.py
 
 Open **http://127.0.0.1:8001/**.
 
-You can also double-click `index.html`; plain `<script>` tags are used, so
+You can also double-click `codzom.html`; plain `<script>` tags are used, so
 `file://` works. An internet connection is needed once for the Three.js CDN.
 
 ### Controls
@@ -97,7 +97,7 @@ Round 1 starts with 500 points and 6/6 boards on both windows.
 
 ```
 cod-zombies-web/
-  index.html                 page shell, menus, HUD, script order
+  codzom.html                page shell, menus, HUD, script order
   css/style.css              dark/orange UI + Zombies HUD
   serve_nocache.py           dev server (no-store cache headers)
   js/
