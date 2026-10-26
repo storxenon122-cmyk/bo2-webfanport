@@ -22,15 +22,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+      - name: Prepare static site files
+        run: |
+          mkdir _site
+          cp index.html README.md HOW_TO_PLAY.md LICENSE _site/
+          cp -R bo2-web cod-zombies-web _site/
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
+        uses: actions/configure-pages@v6
       - name: Upload site files
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - name: Deploy site
         id: deployment
         uses: actions/deploy-pages@v4
