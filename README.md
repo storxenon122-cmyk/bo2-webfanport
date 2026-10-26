@@ -8,8 +8,8 @@ A small collection of two independent, browser-playable first-person games inspi
 
 | Project | What it is | Start here |
 |---|---|---|
-| **BO2: Web Edition** | A solo, continuous-survival FPS with five original maps, enemy bots, customizable classes, weapons, and scorestreaks. | [Open the BO2 game](bo2-web/bo2.html) · [Project details](bo2-web/README.md) |
-| **Zombies: Kino der Toten Web Edition** | A separate, round-based Zombies game. Defend the foyer, earn points, repair barricades, and unlock the theater. | [Open the Zombies game](cod-zombies-web/codzom.html) · [Project details](cod-zombies-web/README.md) |
+| **BO2: Web Edition** | A solo, continuous-survival FPS with five original maps, enemy bots, customizable classes, weapons, and scorestreaks. | [Play BO2 online](https://storxenon122-cmyk.github.io/bo2-webfanport/bo2-web/bo2.html) · [Project details](bo2-web/README.md) |
+| **Zombies: Kino der Toten Web Edition** | A separate, round-based Zombies game. Defend the foyer, earn points, repair barricades, and unlock the theater. | [Play Zombies online](https://storxenon122-cmyk.github.io/bo2-webfanport/cod-zombies-web/codzom.html) · [Project details](cod-zombies-web/README.md) |
 
 These are **separate games** in separate folders. Starting or editing one does not start or change the other. The Zombies game is a compact work in progress: it currently includes the foyer and theater, with several shop/perk features still marked as placeholders.
 
