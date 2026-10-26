@@ -5,6 +5,9 @@ A fan-made, browser-based FPS inspired by *Call of Duty: Black Ops 2* — built 
 All assets are **original and procedurally generated** (no copyrighted files, no
 base64 blobs, no external downloads besides the Three.js CDN).
 
+For the repository overview and the player-facing controls/objectives guide, see
+the [root README](../README.md) and [How to Play](../HOW_TO_PLAY.md).
+
 ---
 
 ## 1. PROJECT FILE TREE

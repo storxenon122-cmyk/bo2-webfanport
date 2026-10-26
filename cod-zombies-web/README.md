@@ -3,6 +3,9 @@
 A standalone, fan-made, browser-based round-based Zombies game built with
 **HTML5 + JavaScript (ES6) + Three.js + Web Audio API + Pointer Lock API**.
 
+For the repository overview and the player-facing controls/objectives guide, see
+the [root README](../README.md) and [How to Play](../HOW_TO_PLAY.md).
+
 This folder is a **separate game**. It does not load, import, write to, or
 require anything from `../bo2-web`. The original BO2 Web survival project was
 left in its pre-Zombies state and is not modified by this build.
