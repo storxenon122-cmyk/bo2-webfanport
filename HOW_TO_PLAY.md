@@ -1,13 +1,13 @@
 # How to Play
 
-This repository contains two separate desktop FPS games. Pick one, start its local server (or open its `index.html`), and use its own menu. Controls below are the defaults; settings and keybind screens may let you customize them.
+This repository contains two separate desktop FPS games. Pick one, start its local server (or open its HTML file), and use its own menu. Controls below are the defaults; settings and keybind screens may let you customize them.
 
 ## Start a game
 
 1. Choose [BO2: Web Edition](bo2-web/README.md) or [Zombies: Kino der Toten](cod-zombies-web/README.md).
 2. Start a local server from that game's folder:
-   - BO2: `python -m http.server 8000`, then open <http://localhost:8000/>.
-   - Zombies: `python -m http.server 8051`, then open <http://localhost:8051/>.
+   - BO2: `python -m http.server 8000`, then open <http://localhost:8000/bo2.html>.
+   - Zombies: `python -m http.server 8051`, then open <http://localhost:8051/codzom.html>.
 3. Click the game's start/menu screen. Click inside the game when prompted to capture the mouse. Press **Esc** to pause and release the mouse.
 
 The browser needs WebGL and an internet connection to load Three.js from its CDN. These games are designed for desktop keyboard and mouse; touch and gamepad controls are not available.
