@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZOMBIES: KINO DER TOTEN &mdash; WEB EDITION</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0e14'/%3E%3Crect x='7' y='6' width='6' height='20' fill='%23e8801c'/%3E%3Crect x='19' y='6' width='6' height='20' fill='%23e8801c'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="game-canvas"></canvas>
+
+<!-- ===================== HUD ===================== -->
+<div id="hud" class="hidden">
+  <canvas id="minimap" width="200" height="200"></canvas>
+
+  <div id="crosshair"><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="hitmarker"><i></i><i></i><i></i><i></i></div>
+  <div id="sniper-scope" class="hidden"></div>
+  <div id="acog-scope" class="hidden"></div>
+  <div id="zoom-scope" class="hidden"></div>
+  <div id="streak-cam-overlay" class="hidden">
+    <div class="sc-vignette"></div>
+    <div class="sc-brackets"></div>
+    <div class="sc-reticle"></div>
+    <div class="sc-readout" id="streak-cam-label"></div>
+  </div>
+
+  <div id="damage-vignette"></div>
+  <div id="flash-overlay"></div>
+  <div id="motionblur-overlay"></div>
+
+  <div id="health-panel">
+    <div id="health-bar"><div id="health-fill"></div></div>
+  </div>
+
+  <div id="ammo-panel">
+    <div id="weapon-name">PDW-77</div>
+    <div id="weapon-alias">CUSTOM 1</div>
+    <div id="ammo-count"><span id="ammo-clip">30</span><span id="ammo-sep">/</span><span id="ammo-reserve">180</span></div>
+    <div id="equip-row">
+      <span id="frag-icon" class="equip">● FRAG</span>
+      <span id="tac-icon" class="equip">◇ FLASH</span>
+    </div>
+  </div>
+
+  <div id="streak-panel">
+    <div id="streak-1" class="streak-slot"><span class="key">1</span><span class="sname">UAV</span><span class="sfill"></span></div>
+    <div id="streak-2" class="streak-slot"><span class="key">2</span><span class="sname">HUNTER KILLER</span><span class="sfill"></span></div>
+    <div id="streak-3" class="streak-slot"><span class="key">3</span><span class="sname">CARE PACKAGE</span><span class="sfill"></span></div>
+    <div id="streak-4" class="streak-slot"><span class="key">4</span><span class="sname">NONE</span><span class="sfill"></span></div>
+  </div>
+
+  <div id="score-panel">
+    <div id="map-name">CARGO 17</div>
+    <div id="wave-info">DIFFICULTY 1</div>
+    <div id="score-info">SCORE 0</div>
+    <div id="streak-info">KILLSTREAK 0</div>
+  </div>
+
+  <div id="killfeed"></div>
+  <div id="announce"></div>
+  <div id="sprint-vignette"></div>
+</div>
+
+<!-- ===================== MAP SELECTION ===================== -->
+<div id="map-select-screen" class="menu-screen hidden">
+  <div class="menu-bg dim"></div>
+  <div class="panel narrow center">
+    <div class="panel-title">SELECT MAP</div>
+    <div class="menu-list" style="width:460px;">
+      <button class="menu-btn" id="btn-map-cargo17"><span class="num">01</span> CARGO 17 <span style="margin-left:auto; color:#7a858d;">CARGO SHIP</span></button>
+      <button class="menu-btn" id="btn-map-downtown"><span class="num">02</span> DOWNTOWN <span style="margin-left:auto; color:#7a858d;">CITY BLOCK</span></button>
+      <button class="menu-btn" id="btn-map-blacksite"><span class="num">03</span> BLACKSITE <span style="margin-left:auto; color:#7a858d;">MILITARY BASE</span></button>
+      <button class="menu-btn" id="btn-map-mirage"><span class="num">04</span> MIRAGE <span style="margin-left:auto; color:#7a858d;">DESERT TOWN</span></button>
+      <button class="menu-btn" id="btn-map-nuketown"><span class="num">05</span> NUKETOWN <span style="margin-left:auto; color:#7a858d;">SUBURBIA</span></button>
+    </div>
+    <div class="panel-buttons" style="justify-content:flex-end;">
+      <button class="menu-btn small" id="btn-map-back">BACK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MAIN MENU ===================== -->
+<div id="main-menu" class="menu-screen">
+  <div class="menu-bg"></div>
+  <div class="menu-header">
+    <div class="menu-title">ZOMBIES</div>
+    <div class="menu-subtitle">KINO DER TOTEN &mdash; WEB EDITION</div>
+  </div>
+  <div class="menu-list">
+    <!-- survival entries stay in the DOM so the shared Menu bindings remain
+         valid, but this standalone build only exposes Zombies -->
+    <button class="menu-btn" id="btn-singleplayer" style="display:none;">SINGLE PLAYER</button>
+    <button class="menu-btn" id="btn-zombies"><span class="num">01</span> ZOMBIES</button>
+    <button class="menu-btn" id="btn-multiplayer" style="display:none;">MULTIPLAYER</button>
+    <button class="menu-btn" id="btn-loadout"><span class="num">02</span> LOADOUT</button>
+    <button class="menu-btn" id="btn-settings"><span class="num">03</span> SETTINGS</button>
+    <button class="menu-btn" id="btn-keybinds"><span class="num">04</span> KEYBINDS</button>
+    <button class="menu-btn" id="btn-exit"><span class="num">05</span> EXIT</button>
+  </div>
+  <div class="menu-footer">FAN PROJECT &bull; ALL ASSETS ORIGINAL &bull; NOT AFFILIATED WITH ACTIVISION / TREYARCH</div>
+</div>
+
+<!-- ===================== LOADOUT ===================== -->
+<div id="loadout-screen" class="menu-screen hidden">
+  <div class="menu-bg"></div>
+  <div class="panel">
+    <div class="panel-title">CREATE A CLASS <span class="orange">/ LOADOUT</span></div>
+    <div id="class-tabs"></div>
+    <div class="loadout-grid">
+      <div class="lo-slot"><label>PRIMARY</label><select id="lo-primary"></select></div>
+      <div class="lo-slot"><label>SECONDARY</label><select id="lo-secondary"></select></div>
+      <div class="lo-slot"><label>LETHAL</label><select id="lo-lethal"></select></div>
+      <div class="lo-slot"><label>TACTICAL</label><select id="lo-tactical"></select></div>
+      <div class="lo-slot"><label>PERK 1</label><select id="lo-perk1"></select></div>
+      <div class="lo-slot"><label>PERK 2</label><select id="lo-perk2"></select></div>
+      <div class="lo-slot"><label>PERK 3</label><select id="lo-perk3"></select></div>
+      <!-- survival-only; hidden in the standalone Zombies build -->
+      <div class="lo-slot wide" style="display:none;"><label>KILLSTREAKS</label>
+        <div class="streak-picks">
+          <select id="lo-streak1"></select>
+          <select id="lo-streak2"></select>
+          <select id="lo-streak3"></select>
+          <select id="lo-streak4"></select>
+        </div>
+      </div>
+      <div class="lo-slot wide"><label>ATTACHMENTS (GUNSMITH)</label>
+        <div class="streak-picks" style="justify-content:space-between;">
+          <div><label style="font-size:11px;">OPTIC</label><select id="lo-optic"></select></div>
+          <div><label style="font-size:11px;">BARREL</label><select id="lo-barrel"></select></div>
+          <div><label style="font-size:11px;">CAMO</label><select id="lo-camo"></select></div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-buttons">
+      <button class="menu-btn small" id="btn-lo-back">BACK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SETTINGS ===================== -->
+<div id="settings-screen" class="menu-screen hidden">
+  <div class="menu-bg"></div>
+  <div class="panel">
+    <div class="panel-title">SETTINGS</div>
+    <div class="settings-list">
+      <div class="set-row"><label>MOUSE SENSITIVITY</label><input type="range" id="set-sens" min="0.2" max="3" step="0.05"><span class="val" id="val-sens"></span></div>
+      <div class="set-row"><label>FIELD OF VIEW</label><input type="range" id="set-fov" min="60" max="110" step="1"><span class="val" id="val-fov"></span></div>
+      <div class="set-row"><label>MASTER VOLUME</label><input type="range" id="set-vol" min="0" max="1" step="0.01"><span class="val" id="val-vol"></span></div>
+      <div class="set-row"><label>BRIGHTNESS</label><input type="range" id="set-bright" min="0.6" max="1.8" step="0.05"><span class="val" id="val-bright"></span></div>
+      <div class="set-row"><label>MOTION BLUR</label><button class="toggle" id="set-blur">ON</button></div>
+      <div class="set-row"><label>GRAPHICS QUALITY</label><select id="set-quality"><option value="low">LOW</option><option value="medium">MEDIUM</option><option value="high">HIGH</option></select></div>
+      <div class="set-row"><label>CONTROL PRESET</label>
+        <select id="set-preset">
+          <option value="default">DEFAULT</option>
+          <option value="tactical">TACTICAL</option>
+          <option value="southpaw">SOUTHPAW</option>
+        </select>
+      </div>
+      <div class="set-row"><label>MOVE FORWARD</label><button class="keybind" data-action="forward">W</button></div>
+      <div class="set-row"><label>MOVE BACK</label><button class="keybind" data-action="back">S</button></div>
+      <div class="set-row"><label>STRAFE LEFT</label><button class="keybind" data-action="left">A</button></div>
+      <div class="set-row"><label>STRAFE RIGHT</label><button class="keybind" data-action="right">D</button></div>
+      <div class="set-row"><label>JUMP</label><button class="keybind" data-action="jump">SPACE</button></div>
+      <div class="set-row"><label>CROUCH</label><button class="keybind" data-action="crouch">CTRL</button></div>
+      <div class="set-row"><label>PRONE</label><button class="keybind" data-action="prone">Z</button></div>
+      <div class="set-row"><label>SPRINT</label><button class="keybind" data-action="sprint">SHIFT</button></div>
+      <div class="set-row"><label>RELOAD</label><button class="keybind" data-action="reload">R</button></div>
+      <div class="set-row"><label>MELEE</label><button class="keybind" data-action="melee">V</button></div>
+      <div class="set-row"><label>USE / PICKUP</label><button class="keybind" data-action="use">F</button></div>
+    </div>
+    <div class="panel-buttons">
+      <button class="menu-btn small" id="btn-set-reset">RESET DEFAULTS</button>
+      <button class="menu-btn small" id="btn-set-back">BACK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== KEYBINDS (ZOMBIES ACTIONS) ===================== -->
+<div id="keybinds-screen" class="menu-screen hidden">
+  <div class="menu-bg"></div>
+  <div class="panel">
+    <div class="panel-title">KEYBINDS <span class="orange">/ ZOMBIES</span></div>
+    <div class="settings-list" id="keybind-list"></div>
+    <div class="panel-buttons">
+      <button class="menu-btn small" id="btn-keybinds-back">BACK</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PAUSE ===================== -->
+<div id="pause-screen" class="menu-screen hidden">
+  <div class="menu-bg dim"></div>
+  <div class="panel narrow">
+    <div class="panel-title">PAUSED</div>
+    <div class="menu-list">
+      <button class="menu-btn" id="btn-resume">RESUME</button>
+      <button class="menu-btn" id="btn-pause-loadout">LOADOUT</button>
+      <button class="menu-btn" id="btn-pause-settings">SETTINGS</button>
+      <button class="menu-btn" id="btn-quit">QUIT TO MENU</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== GAME OVER ===================== -->
+<div id="gameover-screen" class="menu-screen hidden">
+  <div class="menu-bg dim"></div>
+  <div class="panel narrow">
+    <div class="panel-title" id="go-title">K.I.A.</div>
+    <div id="go-respawning" style="color:#e8801c;font-size:14px;letter-spacing:4px;margin:10px 0;display:none;">RESPAWNING…</div>
+    <div class="go-stats">
+      <div><label>SCORE</label><span id="go-score">0</span></div>
+      <div><label>KILLS</label><span id="go-kills">0</span></div>
+      <div><label>DIFFICULTY</label><span id="go-wave">0</span></div>
+      <div><label>HEADSHOTS</label><span id="go-head">0</span></div>
+    </div>
+    <div class="menu-list">
+      <button class="menu-btn" id="btn-retry">REDEPLOY</button>
+      <button class="menu-btn" id="btn-go-loadout">CHANGE LOADOUT</button>
+      <button class="menu-btn" id="btn-go-menu">MAIN MENU</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== EXIT ===================== -->
+<div id="exit-screen" class="menu-screen hidden">
+  <div class="menu-bg"></div>
+  <div class="panel narrow center">
+    <div class="panel-title">THANKS FOR PLAYING</div>
+    <p class="exit-msg">ZOMBIES: KINO DER TOTEN<br>FAN-MADE PROJECT &mdash; CLOSE THIS TAB OR PRESS F11 TO EXIT FULLSCREEN.</p>
+    <div class="menu-list"><button class="menu-btn" id="btn-exit-back">RETURN TO MENU</button></div>
+  </div>
+</div>
+
+<!-- ===================== COMING SOON ===================== -->
+<div id="soon-screen" class="menu-screen hidden">
+  <div class="menu-bg dim"></div>
+  <div class="panel narrow center">
+    <div class="panel-title orange">MULTIPLAYER</div>
+    <p class="exit-msg">COMING SOON</p>
+    <div class="menu-list"><button class="menu-btn" id="btn-soon-back">BACK</button></div>
+  </div>
+</div>
+
+<!-- ===================== LOADING / BOOT ===================== -->
+<div id="boot-screen" class="menu-screen">
+  <div class="boot-inner">
+    <div class="boot-title">ZOMBIES <span class="orange">KINO DER TOTEN</span></div>
+    <div class="boot-hint">CLICK TO INITIALIZE AUDIO &amp; CONTINUE</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.min.js"></script>
+<script src="js/config.js"></script>
+<script src="js/state/kino-state.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/input.js"></script>
+<script src="js/ui/settings.js"></script>
+<script src="js/ui/keybinds.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/weapons.js"></script>
+<script src="js/map.js"></script>
+<script src="js/maps/kino-der-toten.js"></script>
+<script src="js/systems/points.js"></script>
+<script src="js/systems/round-manager.js"></script>
+<script src="js/systems/barricades.js"></script>
+<script src="js/bots.js"></script>
+<script src="js/ai/zombie.js"></script>
+<script src="js/systems/interaction.js"></script>
+<script src="js/killstreaks.js"></script>
+<script src="js/hud.js"></script>
+<script src="js/ui/kino-hud.js"></script>
+<script src="js/game.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/ui/menu.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
