@@ -203,8 +203,36 @@ const InteractionSystem = {
       const res = PointsEconomy.purchase(item.cost, item.label);
       if (!res.ok) { this._fail(item); return; }
     }
+    this._fxFor(item, game);
     try { item.use(game); }
     catch (e) { console.error('interaction error (' + item.id + '):', e); }
+  },
+
+  /* Fire the matching procedural VFX + audio cue for an interaction kind.
+     Additive only — safe no-op when the visual modules aren't loaded. */
+  _fxFor(item, game) {
+    const p = (game && game.player && game.player.pos) || null;
+    const spot = (dy) => p ? new THREE.Vector3(p.x, p.y + (dy || 1.4), p.z - 1.2) : null;
+    switch (item.kind) {
+      case 'perk':
+        if (typeof VFXManager !== 'undefined') VFXManager.perkFlash(spot(1.2));
+        if (typeof KinoCues !== 'undefined') KinoCues.perkJingle();
+        break;
+      case 'box':
+        if (typeof VFXManager !== 'undefined') VFXManager.boxSparkle(spot(1.0), 1.2);
+        if (typeof KinoCues !== 'undefined') KinoCues.boxJingle();
+        break;
+      case 'pap':
+        if (typeof VFXManager !== 'undefined') VFXManager.perkFlash(spot(1.2));
+        if (typeof KinoCues !== 'undefined') KinoCues.perkJingle();
+        break;
+      case 'powerup':
+        if (typeof VFXManager !== 'undefined') VFXManager.powerupGlow(spot(1.0));
+        if (typeof KinoCues !== 'undefined') KinoCues.pickup();
+        break;
+      default:
+        break;   // door / repair / spawn — no dedicated cue yet
+    }
   },
 
   _fail(item) {

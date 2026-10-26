@@ -247,7 +247,7 @@ const KinoInteractables = {
     plate.position.set(0, 0.6, 0); g.add(plate);
 
     const anchor = new THREE.Object3D();
-    anchor.name = 'windowSpawn';      // reuse the anchor name for pickup logic
+    anchor.name = 'powerupAnchor';
     anchor.position.set(0, 0, 0);
     g.add(anchor);
 

@@ -90,6 +90,11 @@ const Game = {
     if (this.scene.userData.mainCamera !== this.camera)
       this.scene.userData.mainCamera = this.camera;
 
+    /* ---------- procedural Kino visuals / audio (additive) ---------- */
+    if (typeof CamoGenerator !== 'undefined') CamoGenerator.install();
+    if (typeof VFXManager !== 'undefined') { VFXManager.init(this.scene); VFXManager.clear(); }
+    if (typeof KinoCues !== 'undefined') KinoCues.init();
+
     /* ---------- weapons / ammo (apply attachments) ---------- */
     const clsAtt = cls.attachments || { optic:'none', barrel:'none' };
     const clsCamo = cls.camo || 'default';
@@ -249,6 +254,7 @@ const Game = {
     this.nades = []; this.rockets = []; this.pickups = [];
     MapData.dispose(this.scene);
     Effects.clear();
+    if (typeof VFXManager !== 'undefined') VFXManager.clear();
     document.getElementById('pause-screen').classList.add('hidden');
     document.getElementById('gameover-screen').classList.add('hidden');
     document.getElementById('sniper-scope').classList.add('hidden');
@@ -774,6 +780,7 @@ const Game = {
     const t = performance.now() / 1000;
     MapData.update(t);
     Effects.update(dt);
+    if (typeof VFXManager !== 'undefined') VFXManager.update(dt);
     if (this.mode === 'zombies') {
       try { Zombies.update(dt, p, this); } catch (e) { console.error('zombie update error:', e); }
       try { BarricadeSystem.update(dt); } catch (e) { console.error('barricade update error:', e); }

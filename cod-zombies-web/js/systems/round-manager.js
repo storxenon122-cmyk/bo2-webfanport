@@ -94,6 +94,8 @@ const RoundManager = {
     if (typeof HUD !== 'undefined' && HUD.announce) HUD.announce('ROUND ' + n, 'SURVIVE');
     if (typeof AudioFX !== 'undefined' && AudioFX.announce) AudioFX.announce();
     if (typeof KinoHUD !== 'undefined' && KinoHUD.roundBanner) KinoHUD.roundBanner(n);
+    if (typeof VFXManager !== 'undefined') VFXManager.roundFlash('start');
+    if (typeof KinoCues !== 'undefined') KinoCues.roundStart();
   },
 
   _endRound() {
@@ -102,6 +104,8 @@ const RoundManager = {
     });
     if (typeof HUD !== 'undefined' && HUD.announce)
       HUD.announce('ROUND ' + this.round + ' CLEARED', 'NEXT WAVE IN 5');
+    if (typeof VFXManager !== 'undefined') VFXManager.roundFlash('end');
+    if (typeof KinoCues !== 'undefined') KinoCues.roundEnd();
     this.intermission = 5;
   }
 };
