@@ -8,7 +8,7 @@ import json
 import sys
 from playwright.async_api import async_playwright
 
-URL = "http://127.0.0.1:8051/"
+URL = "http://127.0.0.1:8051/codzom.html"
 
 async def main():
     console = []

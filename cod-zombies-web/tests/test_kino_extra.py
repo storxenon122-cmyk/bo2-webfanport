@@ -10,7 +10,7 @@ async def main():
         errs=[]
         pg.on("console", lambda m: errs.append(f"[{m.type}] {m.text}"))
         pg.on("pageerror", lambda e: errs.append("PAGEERROR "+str(e)))
-        await pg.goto("http://127.0.0.1:8051/", wait_until="domcontentloaded")
+        await pg.goto("http://127.0.0.1:8051/codzom.html", wait_until="domcontentloaded")
         await pg.wait_for_timeout(4000)
         await pg.click("#boot-screen"); await pg.wait_for_timeout(200)
         await pg.evaluate("Game.start({mode:'zombies'})")
